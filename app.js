@@ -5,8 +5,13 @@ const startBtn = document.querySelector('#start-btn')
 const answersContainer = document.querySelector('#answers-container')
 const questionText = document.querySelector('#question-text')
 const answersBtn = document.querySelector('.answers-btn')
-const totalScore = document.querySelector('#score')
+const currentScore = document.querySelector('#score')
 const progerssBar = document.querySelector('.progress')
+const resultScreen = document.getElementById('result-screen')
+const currentQuestion = document.querySelector('#current-question')
+const finalScore = document.getElementById('final-score')
+const resultMessage = document.getElementById('result-message')
+const restartBtn = document.getElementById('restart-btn')
 
 const questionAll = [
     {
@@ -57,23 +62,21 @@ const questionAll = [
 
 ]
 
-let currentIndex
+let currentIndex = 0
 let score = 0 
 
 const startQuiz = startBtn.addEventListener('click', () =>{
     startScreen.classList.remove('active')
     quizScreen.classList.add('active')
     changeQuestion(currentIndex = 0)
-    pushAnswers()
 })
 
 const changeQuestion = () => {
     questionText.innerHTML = ''
     const q = questionAll[currentIndex]
     questionText.textContent = q.question
-}
+    currentQuestion.textContent = currentIndex + 1
 
-const pushAnswers = () => {
     answersContainer.innerHTML = ''
     
     questionAll[currentIndex].answers.forEach(answers => {
@@ -87,7 +90,7 @@ const pushAnswers = () => {
             if(answers.correct === true){
                 
                 span.classList.add('correct')
-                totalScore.textContent = score += 1
+                currentScore.textContent = score += 1
             }else if(answers.correct === false){
                 
                 span.classList.add('incorrect')
@@ -97,10 +100,37 @@ const pushAnswers = () => {
                     }
                 })
             }
+            
+            setTimeout(() =>{
+                currentIndex++
+
+                if(currentIndex < questionAll.length){
+                    changeQuestion()
+                }else if(currentIndex >= questionAll.length){
+                    quizScreen.classList.remove('active')
+                    resultScreen.classList.add('active')
+                    finalScore.textContent = score
+                    if(score >= 3){
+                        resultMessage.textContent = 'Good Job!'
+                    }else{
+                        resultMessage.textContent = 'Fail!'
+                    }
+                }
+            }, 2000)
         })
         answersContainer.appendChild(span)
+        restartBtn.addEventListener('click', () => {
+            currentIndex = 0
+            score = 0
+
+            resultScreen.classList.remove('active')
+            startScreen.classList.add('active')
+            changeQuestion()
+        })
     })
 }
+
+
 
 let state = 0
 const updateProgress = () =>{
