@@ -85,7 +85,7 @@ const changeQuestion = () => {
         span.textContent = answers.text
 
         span.addEventListener('click' , () =>{
-            state += 20
+            progressPercent += 20
             updateProgress()
             if(answers.correct === true){
                 
@@ -119,7 +119,11 @@ const changeQuestion = () => {
             }, 2000)
         })
         answersContainer.appendChild(span)
-        restartBtn.addEventListener('click', () => {
+        
+    })
+}
+
+restartBtn.addEventListener('click', () => {
             currentIndex = 0
             score = 0
 
@@ -127,14 +131,10 @@ const changeQuestion = () => {
             startScreen.classList.add('active')
             changeQuestion()
         })
-    })
-}
 
-
-
-let state = 0
+let progressPercent = 0
 const updateProgress = () =>{
-    progerssBar.style.width = state + '%'
+    progerssBar.style.width = progressPercent + '%'
 }
 
 
