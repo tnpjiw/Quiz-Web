@@ -96,10 +96,11 @@ body {
 }
 
 .answers-btn.incorrect{
-    background-color: #e6fff0;
-    border-color: #a3f0c4;
+    background-color: #ffe6e6;
+    border-color: #f5b5b5;
     color: #dc3545;
 }
+
 
 .progress-bar {
     height: 10px;

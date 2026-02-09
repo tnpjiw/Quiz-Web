@@ -4,6 +4,9 @@ const quizScreen = document.getElementById('quiz-screen')
 const startBtn = document.querySelector('#start-btn')
 const answersContainer = document.querySelector('#answers-container')
 const questionText = document.querySelector('#question-text')
+const answersBtn = document.querySelector('.answers-btn')
+const totalScore = document.querySelector('#score')
+const progerssBar = document.querySelector('.progress')
 
 const questionAll = [
     {
@@ -54,18 +57,55 @@ const questionAll = [
 
 ]
 
-let currentIndex = 0
+let currentIndex
+let score = 0 
 
 const startQuiz = startBtn.addEventListener('click', () =>{
     startScreen.classList.remove('active')
     quizScreen.classList.add('active')
-    changeQuestion()
+    changeQuestion(currentIndex = 0)
+    pushAnswers()
 })
 
-const changeQuestion = () =>{
+const changeQuestion = () => {
     questionText.innerHTML = ''
     const q = questionAll[currentIndex]
-
     questionText.textContent = q.question
 }
+
+const pushAnswers = () => {
+    answersContainer.innerHTML = ''
+    
+    questionAll[currentIndex].answers.forEach(answers => {
+        const span = document.createElement('span')
+        span.classList.add('answers-btn')
+        span.textContent = answers.text
+
+        span.addEventListener('click' , () =>{
+            state += 20
+            updateProgress()
+            if(answers.correct === true){
+                
+                span.classList.add('correct')
+                totalScore.textContent = score += 1
+            }else if(answers.correct === false){
+                
+                span.classList.add('incorrect')
+               document.querySelectorAll('.answers-btn').forEach((btn,i) =>{
+                    if(questionAll[currentIndex].answers[i].correct){
+                        btn.classList.add('correct')
+                    }
+                })
+            }
+        })
+        answersContainer.appendChild(span)
+    })
+}
+
+let state = 0
+const updateProgress = () =>{
+    progerssBar.style.width = state + '%'
+}
+
+
 
